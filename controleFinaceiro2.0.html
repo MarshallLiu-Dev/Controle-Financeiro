@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1a2a6c">
     <meta name="description" content="Sistema de Controle Financeiro com Firebase e PWA">
+    <link rel="icon" type="image/x-icon" href="/2224480_card_credit card_debit card_master card_icon.png">
     <title>Controle Financeiro Online</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -975,21 +976,19 @@
             measurementId: "G-PK9Z9K4MZT"
         };
 
-
-/*        
         // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
 
-        // Dados iniciais
-        let entradas = [];
-        let saidas = [];
-        let currentUser = null;
-        let isAdmin = false;
+            // Inicializar Firebase
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const db = firebase.firestore();
 
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
+            // Variáveis globais
+            let entradas = [];
+            let saidas = [];
+            let currentUser = null;
+            let isAdmin = false;
+
             // Observador de estado de autenticação
             auth.onAuthStateChanged(user => {
                 if (user) {
@@ -997,142 +996,118 @@
                     document.getElementById('login-container').style.display = 'none';
                     document.getElementById('main-container').style.display = 'block';
 
-                    // Verificar se é admin
-                    checkAdminStatus();
-
                     // Carregar dados do usuário
                     loadUserData();
+
+                    // Atualizar último login
+                    db.collection('users').doc(user.uid).set({
+                        lastLogin: new Date()
+                    }, { merge: true });
+
                 } else {
                     document.getElementById('login-container').style.display = 'block';
                     document.getElementById('main-container').style.display = 'none';
                 }
             });
-        });
+            
 
-        // Funções de autenticação
-        function login() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            // Função para salvar dados no Firebase
+            function saveData() {
+                if (!currentUser) return;
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    showSyncStatus('Login realizado com sucesso!', 'success');
-                })
-                .catch((error) => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
-                });
-        }
+                const userRef = db.collection('users').doc(currentUser.uid);
 
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    showSyncStatus('Logout realizado com sucesso!', 'success');
-                })
-                .catch((error) => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
-                });
-        }
-
-        function showRegister() {
-            openModal('registerModal');
-        }
-
-        function register() {
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-password-confirm').value;
-
-            if (password !== confirmPassword) {
-                showSyncStatus('As senhas não coincidem!', 'error');
-                return;
+                userRef.set({
+                    entradas: entradas,
+                    saidas: saidas,
+                    lastUpdate: new Date()
+                }, { merge: true })
+                    .then(() => {
+                        console.log('Dados salvos com sucesso!');
+                        showSyncStatus('Dados salvos na nuvem!', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Erro ao salvar dados:', error);
+                        showSyncStatus('Erro ao salvar dados!', 'error');
+                    });
             }
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    closeModal('registerModal');
-                    showSyncStatus('Conta criada com sucesso!', 'success');
-                })
-                .catch((error) => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
+            // Função para carregar dados do Firebase
+            function loadUserData() {
+                if (!currentUser) return;
+
+                const userRef = db.collection('users').doc(currentUser.uid);
+
+                userRef.get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        entradas = data.entradas || [];
+                        saidas = data.saidas || [];
+
+                        // Atualizar interface
+                        renderizarTabelas();
+                        calcularTotais();
+
+                        showSyncStatus('Dados carregados!', 'success');
+                    } else {
+                        // Primeiro acesso - criar documento
+                        userRef.set({
+                            entradas: [],
+                            saidas: [],
+                            created: new Date()
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Erro ao carregar dados:', error);
+                    showSyncStatus('Erro ao carregar dados!', 'error');
                 });
-        }
-*/
+            }
 
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+            // Função de login
+            function login() {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
 
-        // Dados iniciais
-        let entradas = [];
-        let saidas = [];
-        let currentUser = null;
-        let isAdmin = false;
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(() => showSyncStatus('Login realizado!', 'success'))
+                    .catch(error => {
+                        console.error('Erro de login:', error);
+                        showSyncStatus(`Erro: ${error.message}`, 'error');
+                    });
+            }
 
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = user;
-                    document.getElementById('login-container').style.display = 'none';
-                    document.getElementById('main-container').style.display = 'block';
+            // Função de logout
 
-                    checkAdminStatus();
-                    loadUserData();
-                } else {
-                    document.getElementById('login-container').style.display = 'block';
-                    document.getElementById('main-container').style.display = 'none';
+            function logout() {
+                    auth.signOut()
+                        .then(() => {
+                            showSyncStatus('Logout realizado com sucesso!', 'success');
+                        })
+                        .catch((error) => {
+                            showSyncStatus(`Erro: ${error.message}`, 'error');
+                        });
                 }
-            });
-        });
 
-        // Funções de autenticação
-        function login() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            // Função de registro
+            function register() {
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-password-confirm').value;
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    showSyncStatus('Login realizado com sucesso!', 'success');
-                })
-                .catch(error => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
-                });
-        }
+                if (password !== confirmPassword) {
+                    showSyncStatus('As senhas não coincidem!', 'error');
+                    return;
+                }
 
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    showSyncStatus('Logout realizado com sucesso!', 'success');
-                })
-                .catch(error => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
-                });
-        }
-
-        function showRegister() {
-            openModal('registerModal');
-        }
-
-        function register() {
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-password-confirm').value;
-
-            if (password !== confirmPassword) {
-                showSyncStatus('As senhas não coincidem!', 'error');
-                return;
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(() => {
+                        closeModal('registerModal');
+                        showSyncStatus('Conta criada com sucesso!', 'success');
+                    })
+                    .catch(error => {
+                        showSyncStatus(`Erro: ${error.message}`, 'error');
+                    });
             }
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(() => {
-                    closeModal('registerModal');
-                    showSyncStatus('Conta criada com sucesso!', 'success');
-                })
-                .catch(error => {
-                    showSyncStatus(`Erro: ${error.message}`, 'error');
-                });
-        }
 
         function adicionarEntrada() {
             const descricao = document.getElementById('descricaoEntrada').value;
@@ -1172,41 +1147,37 @@
             saveData();
         }
 
-        function saveData() {
-            if (!currentUser) return;
 
-            const data = {
-                entradas,
-                saidas,
-                timestamp: new Date().getTime()
-            };
 
-            db.collection('users').doc(currentUser.uid).set(data, { merge: true })
-                .then(() => {
-                    console.log('Dados salvos no Firestore');
-                })
-                .catch(error => {
-                    console.error('Erro ao salvar dados:', error);
-                });
-        }
+        // Função de salvamento ÚNICA
+            function saveData() {
+                if (!currentUser) return;
 
-        function loadUserData() {
-            if (!currentUser) return;
+                db.collection('users').doc(currentUser.uid).set({
+                    entradas: entradas,
+                    saidas: saidas,
+                    lastUpdate: new Date()
+                }, { merge: true }) // IMPORTANTE: merge mantém outros campos
+                    .then(() => console.log("Dados salvos!"))
+                    .catch(error => console.error("Erro ao salvar:", error));
+            }
 
-            db.collection('users').doc(currentUser.uid).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        entradas = data.entradas || [];
-                        saidas = data.saidas || [];
-                        renderizarTabelas();
-                        calcularTotais();
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar dados:', error);
-                });
-        }
+            // Função de carregamento ÚNICA
+            function loadUserData() {
+                if (!currentUser) return;
+
+                db.collection('users').doc(currentUser.uid).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            entradas = data.entradas || [];
+                            saidas = data.saidas || [];
+                            renderizarTabelas();
+                            calcularTotais();
+                        }
+                    })
+                    .catch(error => console.error("Erro ao carregar:", error));
+            }
 
         function checkAdminStatus() {
             if (!currentUser) return;
@@ -1644,6 +1615,7 @@
         }
 
         // Funções de persistência
+
         function saveData() {
             if (!currentUser) return;
 
