@@ -22,589 +22,619 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        /* Estilos anteriores com melhorias para PWA */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #1a2a6c;
-            --secondary: #b21f1f;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --dark: #343a40;
-            --light: #f8f9fa;
-            --pago: #d4edda;
-            --pendente: #fff3cd;
-            --chart-1: #4e73df;
-            --chart-2: #1cc88a;
-            --chart-3: #36b9cc;
-            --chart-4: #f6c23e;
-            --chart-5: #e74a3b;
-            --chart-6: #858796;
-            --chart-7: #5a5c69;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh;
-            padding: 20px;
-            color: #333;
-        }
-
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px 0;
-            color: white;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card h2 i {
-            font-size: 1.8rem;
-        }
-
-        .value {
-            font-size: 2.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: auto;
-        }
-
-        .positive {
-            color: var(--success);
-        }
-
-        .negative {
-            color: var(--danger);
-        }
-
-        .tabs {
-            display: flex;
-            background: white;
-            border-radius: 12px 12px 0 0;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            flex-wrap: wrap;
-        }
-
-        .tab-button {
-            padding: 18px 20px;
-            text-align: center;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #495057;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            flex: 1;
-            min-width: 140px;
-        }
-
-        .tab-button:hover {
-            background: #e9ecef;
-        }
-
-        .tab-button.active {
-            background: white;
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .tab-content {
-            background: white;
-            border-radius: 0 0 12px 12px;
-            padding: 30px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-
-        tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        tfoot {
-            font-weight: bold;
-            background-color: #f1f3f5;
-        }
-
-        tfoot td {
-            font-size: 1.1rem;
-        }
-
-        .pago {
-            background-color: var(--pago);
-            color: #155724;
-        }
-
-        .pendente {
-            background-color: var(--pendente);
-            color: #856404;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
-        }
-
-        .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        .btn-sm {
-            padding: 8px 12px;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #15225a;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: var(--dark);
-        }
-
-        .btn-warning:hover {
-            background: #e0a800;
-            transform: translateY(-2px);
-        }
-
-        .btn i {
-            font-size: 1.1rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .form-row>div {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn-large {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            min-width: 250px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 600px;
-            padding: 30px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #6c757d;
-            background: none;
-            border: none;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close:hover {
-            background: #f1f1f1;
-        }
-
-        .login-container {
-            background: white;
-            border-radius: 15px;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 40px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .login-form .form-group {
-            margin-bottom: 25px;
-        }
-
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: var(--primary);
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo i {
-            font-size: 4rem;
-            color: var(--primary);
-            background: rgba(26, 42, 108, 0.1);
-            padding: 20px;
-            border-radius: 50%;
-        }
-
-        /* Status de sincronização */
-        .sync-status {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Gráficos */
-        .charts-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .chart-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .chart-card h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-
-        /* Painel Administrativo */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .admin-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .admin-card h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .notification-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2rem;
-            }
-
-            .tab-button {
-                min-width: 100px;
-                padding: 15px 10px;
-                font-size: 1rem;
-            }
-
-            .tab-content {
-                padding: 20px 15px;
-            }
-
-            th,
-            td {
-                padding: 12px 10px;
-            }
-
-            .btn-large {
-                min-width: 100%;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
-
-            .charts-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .value {
-                font-size: 1.8rem;
-            }
-
-            .tab-button {
-                min-width: 100%;
-                border-radius: 0;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .footer-buttons {
-                gap: 10px;
-            }
-        }
-
-        /* Ajustes para login */
-        #login-container {
-            display: block;
-        }
-
-        #main-container {
-            display: none;
-        }
+        
+/* Estilos anteriores com melhorias para PWA */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary: #1a2a6c;
+    --secondary: #b21f1f;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --dark: #343a40;
+    --light: #f8f9fa;
+    --pago: #d4edda;
+    --pendente: #fff3cd;
+    --chart-1: #4e73df;
+    --chart-2: #1cc88a;
+    --chart-3: #36b9cc;
+    --chart-4: #f6c23e;
+    --chart-5: #e74a3b;
+    --chart-6: #ff0080; /* Cor ajustada para ser mais distinta */
+    --chart-7: #ffb4dd; /* Cor ajustada para ser mais distinta */
+
+
+body {
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    min-height: 100vh;
+    padding: 20px; /* Será ajustado pelas media queries */
+    color: #333;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+header h1 i {
+    font-size: 3rem; /* Tamanho do ícone ajustado para h1 */
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para min-width menor */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 15px;
+    padding: 25px; /* Será ajustado pelas media queries */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card h2 i {
+    font-size: 1.8rem;
+}
+
+.value {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: auto;
+}
+
+.positive {
+    color: var(--success);
+}
+
+.negative {
+    color: var(--danger);
+}
+
+.tabs {
+    display: flex;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    padding: 18px 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    flex: 1;
+    min-width: 140px;
+}
+
+.tab-button:hover {
+    background: #e9ecef;
+}
+
+.tab-button.active {
+    background: white;
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+}
+
+.tab-content {
+    background: white;
+    border-radius: 0 0 12px 12px;
+    padding: 30px; /* Será ajustado pelas media queries */
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 15px; /* Será ajustado pelas media queries */
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+tfoot {
+    font-weight: bold;
+    background-color: #f1f3f5;
+}
+
+tfoot td {
+    font-size: 1.1rem;
+}
+
+.pago {
+    background-color: var(--pago);
+    color: #155724;
+}
+
+.pendente {
+    background-color: var(--pendente);
+    color: #856404;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-sm {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #15225a;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: var(--warning);
+    color: var(--dark);
+}
+
+.btn-warning:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+}
+
+.btn i {
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.form-row > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    min-width: 250px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #6c757d;
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close:hover {
+    background: #f1f1f1;
+}
+
+.login-container {
+    background: white;
+    border-radius: 15px;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 40px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+}
+
+.login-form .form-group {
+    margin-bottom: 25px;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo i {
+    font-size: 4rem;
+    color: var(--primary);
+    background: rgba(26, 42, 108, 0.1);
+    padding: 20px;
+    border-radius: 50%;
+}
+
+/* Status de sincronização */
+.sync-status {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Gráficos */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduzido de 400px para 300px */
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Painel Administrativo */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.admin-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.2rem;
+    }
+    header h1 i {
+        font-size: 2.5rem; /* Ajuste para ícone em telas menores */
+    }
+    body {
+        padding: 10px; /* Reduz o padding geral da página */
+    }
+    .card {
+        padding: 15px; /* Reduz o padding interno dos cards */
+    }
+    .tab-button {
+        min-width: 100px;
+        padding: 15px 10px;
+        font-size: 1rem;
+    }
+    .tab-content {
+        padding: 20px 15px;
+    }
+    th,
+    td {
+        padding: 12px 10px;
+    }
+    .btn-large {
+        min-width: 100%;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+    .charts-container {
+        grid-template-columns: 1fr; /* Força uma coluna em telas menores */
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+    header h1 i {
+        font-size: 2rem; /* Ajuste para ícone em telas menores */
+    }
+    body {
+        padding: 5px; /* Para telas muito pequenas */
+    }
+    .card {
+        padding: 10px;
+    }
+    .value {
+        font-size: 1.8rem;
+    }
+    .tab-button {
+        min-width: 100%;
+        border-radius: 0;
+    }
+    .actions {
+        flex-direction: column; /* Empilha os botões de ação na tabela */
+        gap: 5px;
+    }
+    .table-container td.actions {
+        min-width: 80px; /* Garante espaço mínimo para a coluna de ações */
+    }
+    .btn-sm {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        width: 100%; /* Faz com que os botões menores preencham a largura disponível */
+    }
+    th, td {
+        padding: 8px; /* Para as tabelas, se for o caso */
+        font-size: 0.85rem; /* Reduzir tamanho da fonte para caber mais */
+    }
+    .form-row {
+        flex-direction: column; /* Empilha os campos do formulário */
+        gap: 10px;
+    }
+    .form-row > div {
+        min-width: unset; /* Remove o min-width para que se ajuste */
+    }
+    .footer-buttons {
+        gap: 10px;
+        flex-direction: column; /* Empilha os botões do footer */
+    }
+}
+
+/* Ajustes para login */
+#login-container {
+    display: block;
+}
+
+#main-container {
+    display: none;
+}       
+    
+}   
     </style>
 </head>
 
@@ -953,7 +983,10 @@
                 <label for="register-password-confirm">Confirmar Senha</label>
                 <input type="password" id="register-password-confirm" placeholder="******">
             </div>
-            <button class="btn btn-primary" onclick="register()">Registrar</button>
+            <button class="btn btn-primary" onclick="register()">Registrar</button>\<p
+                style="text-align: center; margin-top: 20px;">
+                <a href="#" onclick="backToLogin()">Voltar para o login</a>
+            </p>
         </div>
     </div>
 
@@ -964,7 +997,7 @@
     </div>
 
     <script>
-        
+
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCLS-1GwCoyQVRCAHG_b2fwVOcIRjAEu-0",
@@ -978,136 +1011,172 @@
 
         // Inicializar Firebase
 
-            // Inicializar Firebase
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.firestore();
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-            // Variáveis globais
-            let entradas = [];
-            let saidas = [];
-            let currentUser = null;
-            let isAdmin = false;
+        // Variáveis globais
+        let entradas = [];
+        let saidas = [];
+        let currentUser = null;
+        let isAdmin = false;
 
-            // Observador de estado de autenticação
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = user;
-                    document.getElementById('login-container').style.display = 'none';
-                    document.getElementById('main-container').style.display = 'block';
+        // Observador de estado de autenticação
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
 
-                    // Carregar dados do usuário
-                    loadUserData();
+                // Carregar dados do usuário
+                loadUserData();
 
-                    // Atualizar último login
-                    db.collection('users').doc(user.uid).set({
-                        lastLogin: new Date()
-                    }, { merge: true });
+                // Atualizar último login
+                db.collection('users').doc(user.uid).set({
+                    lastLogin: new Date()
+                }, { merge: true });
 
-                } else {
-                    document.getElementById('login-container').style.display = 'block';
-                    document.getElementById('main-container').style.display = 'none';
-                }
-            });
-            
-
-            // Função para salvar dados no Firebase
-            function saveData() {
-                if (!currentUser) return;
-
-                const userRef = db.collection('users').doc(currentUser.uid);
-
-                userRef.set({
-                    entradas: entradas,
-                    saidas: saidas,
-                    lastUpdate: new Date()
-                }, { merge: true })
-                    .then(() => {
-                        console.log('Dados salvos com sucesso!');
-                        showSyncStatus('Dados salvos na nuvem!', 'success');
-                    })
-                    .catch(error => {
-                        console.error('Erro ao salvar dados:', error);
-                        showSyncStatus('Erro ao salvar dados!', 'error');
-                    });
+            } else {
+                document.getElementById('login-container').style.display = 'block';
+                document.getElementById('main-container').style.display = 'none';
             }
+        });
 
-            // Função para carregar dados do Firebase
-            function loadUserData() {
-                if (!currentUser) return;
 
-                const userRef = db.collection('users').doc(currentUser.uid);
+        // Função para salvar dados no Firebase
+        function saveData() {
+            if (!currentUser) return;
 
-                userRef.get().then(doc => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        entradas = data.entradas || [];
-                        saidas = data.saidas || [];
+            const userRef = db.collection('users').doc(currentUser.uid);
 
-                        // Atualizar interface
-                        renderizarTabelas();
-                        calcularTotais();
-
-                        showSyncStatus('Dados carregados!', 'success');
-                    } else {
-                        // Primeiro acesso - criar documento
-                        userRef.set({
-                            entradas: [],
-                            saidas: [],
-                            created: new Date()
-                        });
-                    }
-                }).catch(error => {
-                    console.error('Erro ao carregar dados:', error);
-                    showSyncStatus('Erro ao carregar dados!', 'error');
+            userRef.set({
+                entradas: entradas,
+                saidas: saidas,
+                lastUpdate: new Date()
+            }, { merge: true })
+                .then(() => {
+                    console.log('Dados salvos com sucesso!');
+                    showSyncStatus('Dados salvos na nuvem!', 'success');
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar dados:', error);
+                    showSyncStatus('Erro ao salvar dados!', 'error');
                 });
-            }
+        }
 
-            // Função de login
-            function login() {
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
+        // Função para carregar dados do Firebase
+        function loadUserData() {
+            if (!currentUser) return;
 
-                auth.signInWithEmailAndPassword(email, password)
-                    .then(() => showSyncStatus('Login realizado!', 'success'))
-                    .catch(error => {
-                        console.error('Erro de login:', error);
-                        showSyncStatus(`Erro: ${error.message}`, 'error');
+            const userRef = db.collection('users').doc(currentUser.uid);
+
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    entradas = data.entradas || [];
+                    saidas = data.saidas || [];
+
+                    // Atualizar interface
+                    renderizarTabelas();
+                    calcularTotais();
+
+                    showSyncStatus('Dados carregados!', 'success');
+                } else {
+                    // Primeiro acesso - criar documento
+                    userRef.set({
+                        entradas: [],
+                        saidas: [],
+                        created: new Date()
                     });
+                }
+            }).catch(error => {
+                console.error('Erro ao carregar dados:', error);
+                showSyncStatus('Erro ao carregar dados!', 'error');
+            });
+        }
+
+        // Função de login
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => showSyncStatus('Login realizado!', 'success'))
+                .catch(error => {
+                    console.error('Erro de login:', error);
+                    showSyncStatus(`Erro: ${error.message}`, 'error');
+                });
+        }
+
+        // Função de logout
+
+        function logout() {
+            auth.signOut()
+                .then(() => {
+                    showSyncStatus('Logout realizado com sucesso!', 'success');
+                })
+                .catch((error) => {
+                    showSyncStatus(`Erro: ${error.message}`, 'error');
+                });
+        }
+
+
+
+            function showRegister() {
+                openModal('registerModal');
             }
 
-            // Função de logout
 
-            function logout() {
-                    auth.signOut()
-                        .then(() => {
-                            showSyncStatus('Logout realizado com sucesso!', 'success');
-                        })
-                        .catch((error) => {
-                            showSyncStatus(`Erro: ${error.message}`, 'error');
-                        });
+
+        function backToLogin() {
+            const registerModal = document.getElementById('registerModal');
+            registerModal.style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        }
+
+
+
+        function closeModal(modalId) {
+                let modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = "none"; // Esconde o modal
+                } else {
+                    console.error(`Erro: O modal com ID '${modalId}' não foi encontrado.`);
                 }
-
-            // Função de registro
-            function register() {
-                const email = document.getElementById('register-email').value;
-                const password = document.getElementById('register-password').value;
-                const confirmPassword = document.getElementById('register-password-confirm').value;
-
-                if (password !== confirmPassword) {
-                    showSyncStatus('As senhas não coincidem!', 'error');
-                    return;
-                }
-
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then(() => {
-                        closeModal('registerModal');
-                        showSyncStatus('Conta criada com sucesso!', 'success');
-                    })
-                    .catch(error => {
-                        showSyncStatus(`Erro: ${error.message}`, 'error');
-                    });
             }
+
+
+
+        function register() {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-password-confirm').value;
+
+            if (password !== confirmPassword) {
+                showSyncStatus('As senhas não coincidem!', 'error');
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    closeModal('registerModal');
+                    showSyncStatus('Conta criada com sucesso!', 'success');
+                })
+                .catch(error => showSyncStatus(`Erro: ${error.message}`, 'error'));
+        }
+
+        function showSyncStatus(message, type) {
+            alert(message); // Simples para testes; pode customizar depois
+        }
+
+        // Registrar o Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(() => console.log('Service Worker registrado!'))
+                .catch(error => console.error('Erro ao registrar Service Worker:', error));
+        }
+
 
         function adicionarEntrada() {
             const descricao = document.getElementById('descricaoEntrada').value;
@@ -1150,34 +1219,34 @@
 
 
         // Função de salvamento ÚNICA
-            function saveData() {
-                if (!currentUser) return;
+        function saveData() {
+            if (!currentUser) return;
 
-                db.collection('users').doc(currentUser.uid).set({
-                    entradas: entradas,
-                    saidas: saidas,
-                    lastUpdate: new Date()
-                }, { merge: true }) // IMPORTANTE: merge mantém outros campos
-                    .then(() => console.log("Dados salvos!"))
-                    .catch(error => console.error("Erro ao salvar:", error));
-            }
+            db.collection('users').doc(currentUser.uid).set({
+                entradas: entradas,
+                saidas: saidas,
+                lastUpdate: new Date()
+            }, { merge: true }) // IMPORTANTE: merge mantém outros campos
+                .then(() => console.log("Dados salvos!"))
+                .catch(error => console.error("Erro ao salvar:", error));
+        }
 
-            // Função de carregamento ÚNICA
-            function loadUserData() {
-                if (!currentUser) return;
+        // Função de carregamento ÚNICA
+        function loadUserData() {
+            if (!currentUser) return;
 
-                db.collection('users').doc(currentUser.uid).get()
-                    .then(doc => {
-                        if (doc.exists) {
-                            const data = doc.data();
-                            entradas = data.entradas || [];
-                            saidas = data.saidas || [];
-                            renderizarTabelas();
-                            calcularTotais();
-                        }
-                    })
-                    .catch(error => console.error("Erro ao carregar:", error));
-            }
+            db.collection('users').doc(currentUser.uid).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        entradas = data.entradas || [];
+                        saidas = data.saidas || [];
+                        renderizarTabelas();
+                        calcularTotais();
+                    }
+                })
+                .catch(error => console.error("Erro ao carregar:", error));
+        }
 
         function checkAdminStatus() {
             if (!currentUser) return;
@@ -1187,12 +1256,6 @@
                     isAdmin = doc.exists;
                 });
         }
-
-
-
-
-
-
 
 
         // Funções principais
@@ -1219,25 +1282,54 @@
             });
         }
 
+
         function renderSaidas() {
             const tbody = document.querySelector('#tblSaidas tbody');
             tbody.innerHTML = '';
 
             saidas.forEach((item, index) => {
                 const tr = document.createElement('tr');
+
+                // Obter cor da categoria
+                const bgColor = getCategoriaColor(item.categoria);
+
+                // Aplicar estilo de cor
+                tr.style.backgroundColor = bgColor + '22';  // Adiciona transparência
+                tr.style.borderLeft = `4px solid ${bgColor}`;
+
                 tr.innerHTML = `
-                    <td>${item.categoria}</td>
-                    <td>${item.descricao}</td>
-                    <td>${formatarMoeda(item.valor)}</td>
-                    <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
-                    <td class="actions">
-                        <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})"><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
+                <td>${item.categoria}</td>
+                <td>${item.descricao}</td>
+                <td>${formatarMoeda(item.valor)}</td>
+                <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
+                <td class="actions">
+                    <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
                 tbody.appendChild(tr);
             });
         }
+
+        // Função para obter cores em hexadecimal
+        function getCategoriaColor(categoria) {
+            const colorMap = {
+                "💳 Cartão de Crédito": "#4e73df",
+                "🌐 Internet & Celular": "#1cc88a",
+                "🧾 Contas Fixas": "#36b9cc",
+                "💇 Cuidado Pessoal": "#f6c23e",
+                "🔧 Manutenção": "#e74a3b",
+                "🍔 Alimentação": "#858796",
+                "⚰️ Outros Gastos": "#ff0080",
+                "💸 Outros Gastos": "#ffb4dd"
+            };
+            return colorMap[categoria] || "#e5ff00";
+        }
+
 
         function calcularTotais() {
             // Entradas
@@ -1404,126 +1496,146 @@
             }
         }
 
-        // Funções de gráficos
-        function renderizarGraficos() {
-            // Gráfico de categorias
-            const categorias = {};
-            saidas.forEach(saida => {
-                if (categorias[saida.categoria]) {
-                    categorias[saida.categoria] += saida.valor;
-                } else {
-                    categorias[saida.categoria] = saida.valor;
-                }
-            });
+    // Funções de gráficos
+    function renderizarGraficos() {
+        // Gráfico de categorias
+        const categorias = {};
+        saidas.forEach(saida => {
+            if (categorias[saida.categoria]) {
+                categorias[saida.categoria] += saida.valor;
+            } else {
+                categorias[saida.categoria] = saida.valor;
+            }
+        });
 
-            const categoriaCtx = document.getElementById('categoriaChart').getContext('2d');
-            new Chart(categoriaCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(categorias),
-                    datasets: [{
-                        data: Object.values(categorias),
-                        backgroundColor: [
-                            'var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)',
-                            'var(--chart-4)', 'var(--chart-5)', 'var(--chart-6)', 'var(--chart-7)'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right'
-                        }
-                    }
-                }
-            });
+        // Crie um array de cores dinamicamente usando getCategoriaColor
+        const categoryColors = Object.keys(categorias).map(categoria => getCategoriaColor(categoria));
 
-            // Gráfico de status
-            const statusCount = {
-                'Pago': saidas.filter(s => s.status === 'Pago').length,
-                'Pendente': saidas.filter(s => s.status === 'Pendente').length
-            };
+        const categoriaCtx = document.getElementById('categoriaChart').getContext('2d');
 
-            const statusCtx = document.getElementById('statusChart').getContext('2d');
-            new Chart(statusCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Pago', 'Pendente'],
-                    datasets: [{
-                        data: [statusCount.Pago, statusCount.Pendente],
-                        backgroundColor: ['var(--success)', 'var(--warning)']
-                    }]
-                },
-                options: {
-                    responsive: true
-                }
-            });
-
-            // Gráfico comparativo
-            const totalEntradas = entradas.reduce((sum, item) => sum + item.valor, 0);
-            const totalSaidas = saidas.reduce((sum, item) => sum + item.valor, 0);
-
-            const comparativoCtx = document.getElementById('comparativoChart').getContext('2d');
-            new Chart(comparativoCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Entradas', 'Saídas'],
-                    datasets: [{
-                        label: 'Valores',
-                        data: [totalEntradas, totalSaidas],
-                        backgroundColor: ['var(--success)', 'var(--danger)']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de evolução mensal (simulado)
-            const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            const entradasMensais = meses.map(() => Math.floor(Math.random() * 5000) + 2000);
-            const saidasMensais = meses.map(() => Math.floor(Math.random() * 4500) + 1500);
-
-            const evolucaoCtx = document.getElementById('evolucaoChart').getContext('2d');
-            new Chart(evolucaoCtx, {
-                type: 'line',
-                data: {
-                    labels: meses,
-                    datasets: [
-                        {
-                            label: 'Entradas',
-                            data: entradasMensais,
-                            borderColor: 'var(--success)',
-                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        },
-                        {
-                            label: 'Saídas',
-                            data: saidasMensais,
-                            borderColor: 'var(--danger)',
-                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                            tension: 0.3,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+        // Destrua o gráfico existente antes de criar um novo, se houver
+        if (window.categoriaChartInstance) {
+            window.categoriaChartInstance.destroy();
         }
+
+        window.categoriaChartInstance = new Chart(categoriaCtx, { // Armazene a instância globalmente
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(categorias),
+                datasets: [{
+                    data: Object.values(categorias),
+                    backgroundColor: categoryColors // Use as cores geradas aqui
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        // Gráfico de status
+        const statusCount = {
+            'Pago': saidas.filter(s => s.status === 'Pago').length,
+            'Pendente': saidas.filter(s => s.status === 'Pendente').length
+        };
+
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        // Destrua o gráfico existente antes de criar um novo, se houver
+        if (window.statusChartInstance) {
+            window.statusChartInstance.destroy();
+        }
+        window.statusChartInstance = new Chart(statusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Pago', 'Pendente'],
+                datasets: [{
+                    data: [statusCount.Pago, statusCount.Pendente],
+                    backgroundColor: ['var(--success)', 'var(--warning)'] // Mantém as variáveis CSS
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Gráfico comparativo
+        const totalEntradas = entradas.reduce((sum, item) => sum + item.valor, 0);
+        const totalSaidas = saidas.reduce((sum, item) => sum + item.valor, 0);
+
+        const comparativoCtx = document.getElementById('comparativoChart').getContext('2d');
+        // Destrua o gráfico existente antes de criar um novo, se houver
+        if (window.comparativoChartInstance) {
+            window.comparativoChartInstance.destroy();
+        }
+        window.comparativoChartInstance = new Chart(comparativoCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Entradas', 'Saídas'],
+                datasets: [{
+                    label: 'Valores',
+                    data: [totalEntradas, totalSaidas],
+                    backgroundColor: ['var(--success)', 'var(--danger)'] // Mantém as variáveis CSS
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfico de evolução mensal
+        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        // **Importante:** Os dados de entradasMensais e saidasMensais estão simulados com Math.random().
+        // Para um gráfico real, você precisaria calcular esses valores a partir dos seus dados de 'entradas' e 'saidas' por mês.
+        const entradasMensais = meses.map(() => Math.floor(Math.random() * 5000) + 2000);
+        const saidasMensais = meses.map(() => Math.floor(Math.random() * 4500) + 1500);
+
+        const evolucaoCtx = document.getElementById('evolucaoChart').getContext('2d');
+        // Destrua o gráfico existente antes de criar um novo, se houver
+        if (window.evolucaoChartInstance) {
+            window.evolucaoChartInstance.destroy();
+        }
+        window.evolucaoChartInstance = new Chart(evolucaoCtx, {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [
+                    {
+                        label: 'Entradas',
+                        data: entradasMensais,
+                        borderColor: 'var(--success)', // Mantém as variáveis CSS
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)', // Cor de fundo da área abaixo da linha
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Saídas',
+                        data: saidasMensais,
+                        borderColor: 'var(--danger)', // Mantém as variáveis CSS
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)', // Cor de fundo da área abaixo da linha
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 
         // Funções de notificação
         function saveNotification(notification) {
