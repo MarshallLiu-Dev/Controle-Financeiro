@@ -22,619 +22,735 @@
     <link rel="apple-touch-icon" href="icon-192x192.png">
 
     <style>
-        
-/* Estilos anteriores com melhorias para PWA */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-:root {
-    --primary: #1a2a6c;
-    --secondary: #b21f1f;
-    --success: #28a745;
-    --danger: #dc3545;
-    --warning: #ffc107;
-    --dark: #343a40;
-    --light: #f8f9fa;
-    --pago: #d4edda;
-    --pendente: #fff3cd;
-    --chart-1: #4e73df;
-    --chart-2: #1cc88a;
-    --chart-3: #36b9cc;
-    --chart-4: #f6c23e;
-    --chart-5: #e74a3b;
-    --chart-6: #ff0080; /* Cor ajustada para ser mais distinta */
-    --chart-7: #ffb4dd; /* Cor ajustada para ser mais distinta */
-
-
-body {
-    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    min-height: 100vh;
-    padding: 20px; /* Será ajustado pelas media queries */
-    color: #333;
-}
-
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-header {
-    text-align: center;
-    padding: 20px 0;
-    color: white;
-    margin-bottom: 30px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-header h1 {
-    font-size: 2.8rem;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-header h1 i {
-    font-size: 3rem; /* Tamanho do ícone ajustado para h1 */
-}
-
-header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para min-width menor */
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.card {
-    background: rgba(255, 255, 255, 0.92);
-    border-radius: 15px;
-    padding: 25px; /* Será ajustado pelas media queries */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.card h2 i {
-    font-size: 1.8rem;
-}
-
-.value {
-    font-size: 2.2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-top: auto;
-}
-
-.positive {
-    color: var(--success);
-}
-
-.negative {
-    color: var(--danger);
-}
-
-.tabs {
-    display: flex;
-    background: white;
-    border-radius: 12px 12px 0 0;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    flex-wrap: wrap;
-}
-
-.tab-button {
-    padding: 18px 20px;
-    text-align: center;
-    background: #f8f9fa;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #495057;
-    transition: all 0.3s ease;
-    border-bottom: 3px solid transparent;
-    flex: 1;
-    min-width: 140px;
-}
-
-.tab-button:hover {
-    background: #e9ecef;
-}
-
-.tab-button.active {
-    background: white;
-    color: var(--primary);
-    border-bottom: 3px solid var(--primary);
-}
-
-.tab-content {
-    background: white;
-    border-radius: 0 0 12px 12px;
-    padding: 30px; /* Será ajustado pelas media queries */
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-    margin-bottom: 30px;
-}
-
-.table-container {
-    overflow-x: auto;
-    margin: 20px 0;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 15px; /* Será ajustado pelas media queries */
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-th {
-    background-color: var(--primary);
-    color: white;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-}
-
-tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-tfoot {
-    font-weight: bold;
-    background-color: #f1f3f5;
-}
-
-tfoot td {
-    font-size: 1.1rem;
-}
-
-.pago {
-    background-color: var(--pago);
-    color: #155724;
-}
-
-.pendente {
-    background-color: var(--pendente);
-    color: #856404;
-}
-
-input,
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-input:focus,
-select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
-}
-
-.actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.btn-sm {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #15225a;
-    transform: translateY(-2px);
-}
-
-.btn-success {
-    background: var(--success);
-    color: white;
-}
-
-.btn-success:hover {
-    background: #218838;
-    transform: translateY(-2px);
-}
-
-.btn-danger {
-    background: var(--danger);
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-2px);
-}
-
-.btn-warning {
-    background: var(--warning);
-    color: var(--dark);
-}
-
-.btn-warning:hover {
-    background: #e0a800;
-    transform: translateY(-2px);
-}
-
-.btn i {
-    font-size: 1.1rem;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-
-.form-row > div {
-    flex: 1;
-    min-width: 200px;
-}
-
-.footer-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.btn-large {
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    min-width: 250px;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 600px;
-    padding: 30px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #6c757d;
-    background: none;
-    border: none;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.close:hover {
-    background: #f1f1f1;
-}
-
-.login-container {
-    background: white;
-    border-radius: 15px;
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 40px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-}
-
-.login-form .form-group {
-    margin-bottom: 25px;
-}
-
-.login-form h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: var(--primary);
-}
-
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.logo i {
-    font-size: 4rem;
-    color: var(--primary);
-    background: rgba(26, 42, 108, 0.1);
-    padding: 20px;
-    border-radius: 50%;
-}
-
-/* Status de sincronização */
-.sync-status {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--success);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 100;
-    animation: slideIn 0.5s ease;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.hidden {
-    display: none;
-}
-
-/* Gráficos */
-.charts-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduzido de 400px para 300px */
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.chart-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.chart-card h3 {
-    margin-bottom: 15px;
-    color: var(--primary);
-}
-
-.chart-container {
-    position: relative;
-    height: 300px;
-    width: 100%;
-}
-
-/* Painel Administrativo */
-.admin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.admin-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.admin-card h3 {
-    margin-bottom: 15px;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.notification-list {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.notification-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.notification-item:last-child {
-    border-bottom: none;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2.2rem;
-    }
-    header h1 i {
-        font-size: 2.5rem; /* Ajuste para ícone em telas menores */
-    }
-    body {
-        padding: 10px; /* Reduz o padding geral da página */
-    }
-    .card {
-        padding: 15px; /* Reduz o padding interno dos cards */
-    }
-    .tab-button {
-        min-width: 100px;
-        padding: 15px 10px;
-        font-size: 1rem;
-    }
-    .tab-content {
-        padding: 20px 15px;
-    }
-    th,
-    td {
-        padding: 12px 10px;
-    }
-    .btn-large {
-        min-width: 100%;
-    }
-    .modal-content {
-        padding: 20px;
-    }
-    .charts-container {
-        grid-template-columns: 1fr; /* Força uma coluna em telas menores */
-        gap: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 1.8rem;
-    }
-    header h1 i {
-        font-size: 2rem; /* Ajuste para ícone em telas menores */
-    }
-    body {
-        padding: 5px; /* Para telas muito pequenas */
-    }
-    .card {
-        padding: 10px;
-    }
-    .value {
-        font-size: 1.8rem;
-    }
-    .tab-button {
-        min-width: 100%;
-        border-radius: 0;
-    }
-    .actions {
-        flex-direction: column; /* Empilha os botões de ação na tabela */
-        gap: 5px;
-    }
-    .table-container td.actions {
-        min-width: 80px; /* Garante espaço mínimo para a coluna de ações */
-    }
-    .btn-sm {
-        padding: 6px 8px;
-        font-size: 0.8rem;
-        width: 100%; /* Faz com que os botões menores preencham a largura disponível */
-    }
-    th, td {
-        padding: 8px; /* Para as tabelas, se for o caso */
-        font-size: 0.85rem; /* Reduzir tamanho da fonte para caber mais */
-    }
-    .form-row {
-        flex-direction: column; /* Empilha os campos do formulário */
-        gap: 10px;
-    }
-    .form-row > div {
-        min-width: unset; /* Remove o min-width para que se ajuste */
-    }
-    .footer-buttons {
-        gap: 10px;
-        flex-direction: column; /* Empilha os botões do footer */
-    }
-}
-
-/* Ajustes para login */
-#login-container {
-    display: block;
-}
-
-#main-container {
-    display: none;
-}       
-    
-}   
+        /* Estilos anteriores com melhorias para PWA */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a2a6c;
+            --secondary: #b21f1f;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --pago: #d4edda;
+            --pendente: #fff3cd;
+            --chart-1: #4e73df;
+            --chart-2: #1cc88a;
+            --chart-3: #36b9cc;
+            --chart-4: #f6c23e;
+            --chart-5: #e74a3b;
+            --chart-6: #ff0080;
+            --chart-7: #ffb4dd;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 i {
+            font-size: 3rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            font-size: 1.8rem;
+        }
+
+        .value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 18px 20px;
+            text-align: center;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            background: white;
+            border-radius: 0 0 12px 12px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tfoot {
+            font-weight: bold;
+            background-color: #f1f3f5;
+        }
+
+        tfoot td {
+            font-size: 1.1rem;
+        }
+
+        .pago {
+            background-color: var(--pago);
+            color: #155724;
+        }
+
+        .pendente {
+            background-color: var(--pendente);
+            color: #856404;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #15225a;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-row>div {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            min-width: 250px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #6c757d;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            background: #f1f1f1;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 25px;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 4rem;
+            color: var(--primary);
+            background: rgba(26, 42, 108, 0.1);
+            padding: 20px;
+            border-radius: 50%;
+        }
+
+        /* Status de sincronização */
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Gráficos */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Painel Administrativo */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            header h1 i {
+                font-size: 2.5rem;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .tab-button {
+                min-width: 100px;
+                padding: 15px 10px;
+                font-size: 1rem;
+            }
+
+            .tab-content {
+                padding: 20px 15px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+            }
+
+            .btn-large {
+                min-width: 100%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header h1 i {
+                font-size: 2rem;
+            }
+
+            body {
+                padding: 5px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            .value {
+                font-size: 1.8rem;
+            }
+
+            .tab-button {
+                min-width: 100%;
+                border-radius: 0;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .table-container td.actions {
+                min-width: 80px;
+            }
+
+            .btn-sm {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-row>div {
+                min-width: unset;
+            }
+
+            .footer-buttons {
+                gap: 10px;
+                flex-direction: column;
+            }
+        }
+
+        /* Ajustes para login */
+        #login-container {
+            display: block;
+        }
+
+        #main-container {
+            display: none;
+        }
+
+        /* Notificações */
+        .notification-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .notification-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 350px;
+            max-height: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .notification-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h5 {
+            margin: 0;
+        }
+
+        .notification-list {
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .notification-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .notification-item.warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .notification-item.danger {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .notification-item.info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #0dcaf0;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -663,6 +779,19 @@ select:focus {
 
     <!-- Conteúdo principal após login -->
     <div id="main-container" class="container">
+        <div class="notification-icon" onclick="toggleNotifications()">
+            <i class="fas fa-bell"></i>
+            <span id="notification-badge" class="notification-badge"></span>
+        </div>
+
+        <div id="notification-panel" class="notification-panel">
+            <div class="notification-header">
+                <h5>Notificações</h5>
+                <button class="btn btn-sm btn-link" onclick="markAllAsRead()">Marcar todas como lidas</button>
+            </div>
+            <div id="floating-notification-list" class="notification-list"></div>
+        </div>
+
         <header>
             <h1><i class="fas fa-wallet"></i> Controle Financeiro Online</h1>
             <p>Gerencie suas finanças de qualquer dispositivo e compartilhe com quem quiser</p>
@@ -983,8 +1112,8 @@ select:focus {
                 <label for="register-password-confirm">Confirmar Senha</label>
                 <input type="password" id="register-password-confirm" placeholder="******">
             </div>
-            <button class="btn btn-primary" onclick="register()">Registrar</button>\<p
-                style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-primary" onclick="register()">Registrar</button>
+            <p style="text-align: center; margin-top: 20px;">
                 <a href="#" onclick="backToLogin()">Voltar para o login</a>
             </p>
         </div>
@@ -997,7 +1126,6 @@ select:focus {
     </div>
 
     <script>
-
         // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCLS-1GwCoyQVRCAHG_b2fwVOcIRjAEu-0",
@@ -1008,8 +1136,6 @@ select:focus {
             appId: "1:929745653564:web:7e25c5e6d071055ab15839",
             measurementId: "G-PK9Z9K4MZT"
         };
-
-        // Inicializar Firebase
 
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1037,64 +1163,231 @@ select:focus {
                     lastLogin: new Date()
                 }, { merge: true });
 
+                // Mostrar notificações
+                showNotifications();
+
             } else {
                 document.getElementById('login-container').style.display = 'block';
                 document.getElementById('main-container').style.display = 'none';
             }
         });
 
+        // Função para gerar notificações de vencimento
+        function generateDueNotifications() {
+            const hoje = new Date();
+            const notifications = [];
 
-        // Função para salvar dados no Firebase
-        function saveData() {
-            if (!currentUser) return;
+            saidas.forEach((saida, index) => {
+                if (saida.vencimento && saida.status !== 'Pago') {
+                    const vencimento = new Date(saida.vencimento);
+                    // Ajustar para considerar a data sem hora
+                    vencimento.setHours(0, 0, 0, 0);
+                    const diffDias = Math.ceil((vencimento - hoje) / (1000 * 60 * 60 * 24));
 
-            const userRef = db.collection('users').doc(currentUser.uid);
+                    if (diffDias <= 3 && diffDias >= 0) {
+                        notifications.push({
+                            title: 'Conta próxima do vencimento',
+                            message: `A conta "${saida.descricao}" vence em ${diffDias} dia(s)`,
+                            type: 'warning',
+                            timestamp: new Date().getTime(),
+                            billId: index
+                        });
+                    }
+                    else if (diffDias < 0) {
+                        notifications.push({
+                            title: 'Conta vencida!',
+                            message: `A conta "${saida.descricao}" está ${Math.abs(diffDias)} dia(s) atrasada`,
+                            type: 'danger',
+                            timestamp: new Date().getTime(),
+                            billId: index
+                        });
+                    }
+                }
+            });
 
-            userRef.set({
-                entradas: entradas,
-                saidas: saidas,
-                lastUpdate: new Date()
-            }, { merge: true })
-                .then(() => {
-                    console.log('Dados salvos com sucesso!');
-                    showSyncStatus('Dados salvos na nuvem!', 'success');
+            return notifications;
+        }
+
+        // Função para exibir notificações
+        function showNotifications() {
+            const adminList = document.getElementById('notification-list');
+            const floatingList = document.getElementById('floating-notification-list');
+            adminList.innerHTML = '';
+            floatingList.innerHTML = '';
+
+            // Notificações de vencimento (geradas em tempo real)
+            const dueNotifications = generateDueNotifications();
+
+            // Notificações persistentes (salvas no Firebase)
+            db.collection('notifications')
+                .where('userId', '==', currentUser.uid)
+                .where('read', '==', false)
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .get()
+                .then(snapshot => {
+                    // Combinar ambas as notificações
+                    const allNotifications = [...dueNotifications, ...snapshot.docs.map(doc => {
+                        return { id: doc.id, ...doc.data() };
+                    })];
+
+                    // Ordenar por timestamp (mais recente primeiro)
+                    allNotifications.sort((a, b) => b.timestamp - a.timestamp);
+
+                    // Renderizar
+                    allNotifications.forEach(notification => {
+                        const item = document.createElement('div');
+                        item.className = `notification-item ${notification.type || 'info'}`;
+
+                        let content = `
+                            <div class="notification-content">
+                                <strong>${notification.title}</strong>
+                                <p>${notification.message}</p>
+                                <small>${new Date(notification.timestamp).toLocaleString()}</small>
+                            </div>
+                        `;
+
+                        if (notification.billId !== undefined) {
+                            content += `
+                                <button class="btn btn-sm btn-primary" onclick="editarSaida(${notification.billId})">
+                                    <i class="fas fa-edit"></i> Ver Conta
+                                </button>
+                            `;
+                        }
+
+                        if (notification.id) {
+                            content += `
+                                <button class="btn btn-sm btn-light" onclick="markNotificationAsRead('${notification.id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                        }
+
+                        item.innerHTML = content;
+
+                        // Adicionar à lista administrativa (admin-card)
+                        adminList.appendChild(item.cloneNode(true));
+                        // Adicionar à lista flutuante
+                        floatingList.appendChild(item);
+                    });
+
+                    // Atualizar badge
+                    const notificationBadge = document.getElementById('notification-badge');
+                    notificationBadge.textContent = allNotifications.length > 0 ? allNotifications.length : '';
+                    notificationBadge.style.display = allNotifications.length > 0 ? 'block' : 'none';
                 })
                 .catch(error => {
-                    console.error('Erro ao salvar dados:', error);
-                    showSyncStatus('Erro ao salvar dados!', 'error');
+                    console.error("Erro ao carregar notificações: ", error);
                 });
         }
 
-        // Função para carregar dados do Firebase
-        function loadUserData() {
-            if (!currentUser) return;
+        function toggleNotifications() {
+            const panel = document.getElementById('notification-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            if (panel.style.display === 'block') {
+                showNotifications();
+            }
+        }
 
-            const userRef = db.collection('users').doc(currentUser.uid);
-
-            userRef.get().then(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    entradas = data.entradas || [];
-                    saidas = data.saidas || [];
-
-                    // Atualizar interface
-                    renderizarTabelas();
-                    calcularTotais();
-
-                    showSyncStatus('Dados carregados!', 'success');
-                } else {
-                    // Primeiro acesso - criar documento
-                    userRef.set({
-                        entradas: [],
-                        saidas: [],
-                        created: new Date()
-                    });
-                }
-            }).catch(error => {
-                console.error('Erro ao carregar dados:', error);
-                showSyncStatus('Erro ao carregar dados!', 'error');
+        function markNotificationAsRead(notificationId) {
+            db.collection('notifications').doc(notificationId).update({
+                read: true
+            }).then(() => {
+                showNotifications();
             });
         }
+
+        function markAllAsRead() {
+            db.collection('notifications')
+                .where('userId', '==', currentUser.uid)
+                .where('read', '==', false)
+                .get()
+                .then(snapshot => {
+                    const batch = db.batch();
+                    snapshot.forEach(doc => {
+                        batch.update(doc.ref, { read: true });
+                    });
+                    return batch.commit();
+                })
+                .then(() => {
+                    showNotifications();
+                });
+        }
+
+        // Função para salvar dados no Firebase
+    // Função de salvamento atualizada para preservar dados históricos
+    async function saveData() {
+        if (!currentUser) return;
+
+        try {
+            const userDocRef = db.collection('users').doc(currentUser.uid);
+            const doc = await userDocRef.get();
+
+            if (doc.exists) {
+                const existingData = doc.data();
+                // Combina dados existentes com novos dados
+                await userDocRef.update({
+                    entradas: [...(existingData.entradas || []), ...entradas],
+                    saidas: [...(existingData.saidas || []), ...saidas],
+                    lastUpdate: new Date()
+                });
+            } else {
+                // Cria novo documento se não existir
+                await userDocRef.set({
+                    entradas: entradas,
+                    saidas: saidas,
+                    created: new Date(),
+                    lastUpdate: new Date()
+                });
+            }
+            console.log("Dados salvos com sucesso!");
+            showSyncStatus('Dados sincronizados!', 'success');
+        } catch (error) {
+            console.error("Erro ao salvar:", error);
+            showSyncStatus('Erro ao sincronizar dados!', 'error');
+        }
+    }
+
+        // Função para carregar dados do Firebase (atualizada)
+        // Função para carregar dados do Firebase (corrigida)
+        
+            async function loadUserData() {
+                if (!currentUser) return;
+
+                try {
+                    const userRef = db.collection('users').doc(currentUser.uid);
+                    const doc = await userRef.get();
+
+                    if (doc.exists) {
+                        const data = doc.data();
+                        // CORREÇÃO: Substituir arrays locais em vez de combinar
+                        entradas = data.entradas || [];
+                        saidas = data.saidas || [];
+
+                        // Atualizar interface
+                        renderizarTabelas();
+                        calcularTotais();
+
+                        showSyncStatus('Dados carregados!', 'success');
+                    } else {
+                        // Primeiro acesso - criar documento
+                        await userRef.set({
+                            entradas: entradas,
+                            saidas: saidas,
+                            created: new Date(),
+                            lastUpdate: new Date()
+                        });
+                    }
+
+                    // Atualizar notificações
+                    showNotifications();
+
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    showSyncStatus('Erro ao carregar dados!', 'error');
+                }
+            }
+
 
         // Função de login
         function login() {
@@ -1110,7 +1403,6 @@ select:focus {
         }
 
         // Função de logout
-
         function logout() {
             auth.signOut()
                 .then(() => {
@@ -1121,13 +1413,9 @@ select:focus {
                 });
         }
 
-
-
-            function showRegister() {
-                openModal('registerModal');
-            }
-
-
+        function showRegister() {
+            openModal('registerModal');
+        }
 
         function backToLogin() {
             const registerModal = document.getElementById('registerModal');
@@ -1135,18 +1423,14 @@ select:focus {
             document.getElementById('login-container').style.display = 'block';
         }
 
-
-
         function closeModal(modalId) {
-                let modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.style.display = "none"; // Esconde o modal
-                } else {
-                    console.error(`Erro: O modal com ID '${modalId}' não foi encontrado.`);
-                }
+            let modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "none";
+            } else {
+                console.error(`Erro: O modal com ID '${modalId}' não foi encontrado.`);
             }
-
-
+        }
 
         function register() {
             const email = document.getElementById('register-email').value;
@@ -1166,97 +1450,262 @@ select:focus {
                 .catch(error => showSyncStatus(`Erro: ${error.message}`, 'error'));
         }
 
-        function showSyncStatus(message, type) {
-            alert(message); // Simples para testes; pode customizar depois
+        // Funções para adicionar/editar entradas
+        function addEntrada() {
+            document.getElementById('entradaDescricao').value = '';
+            document.getElementById('entradaValor').value = '';
+            openModal('entradaModal');
         }
 
-        // Registrar o Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js')
-                .then(() => console.log('Service Worker registrado!'))
-                .catch(error => console.error('Erro ao registrar Service Worker:', error));
+        function saveEntrada() {
+            const descricao = document.getElementById('entradaDescricao').value;
+            const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
+
+            if (!descricao || isNaN(valor)) {
+                alert('Por favor, preencha todos os campos corretamente!');
+                return;
+            }
+
+            entradas.push({ descricao, valor });
+            closeModal('entradaModal');
+            renderizarTabelas();
+            calcularTotais();
+            saveData();
         }
 
+        function editarEntrada(index) {
+            document.getElementById('entradaDescricao').value = entradas[index].descricao;
+            document.getElementById('entradaValor').value = entradas[index].valor;
+            openModal('entradaModal');
 
-        function adicionarEntrada() {
-            const descricao = document.getElementById('descricaoEntrada').value;
-            const valor = parseFloat(document.getElementById('valorEntrada').value);
+            // Substitui a entrada ao salvar
+            const saveBtn = document.querySelector('#entradaModal .btn');
+            saveBtn.onclick = function () {
+                const descricao = document.getElementById('entradaDescricao').value;
+                const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
 
-            if (descricao && !isNaN(valor)) {
-                entradas.push({ descricao, valor });
+                if (!descricao || isNaN(valor)) {
+                    alert('Por favor, preencha todos os campos corretamente!');
+                    return;
+                }
+
+                entradas[index] = { descricao, valor };
+                closeModal('entradaModal');
                 renderizarTabelas();
                 calcularTotais();
                 saveData();
-            }
-        }
-
-        function adicionarSaida() {
-            const descricao = document.getElementById('descricaoSaida').value;
-            const valor = parseFloat(document.getElementById('valorSaida').value);
-
-            if (descricao && !isNaN(valor)) {
-                saidas.push({ descricao, valor });
-                renderizarTabelas();
-                calcularTotais();
-                saveData();
-            }
+            };
         }
 
         function removerEntrada(index) {
-            entradas.splice(index, 1);
-            renderizarTabelas();
-            calcularTotais();
-            saveData();
+            if (confirm('Tem certeza que deseja remover esta entrada?')) {
+                entradas.splice(index, 1);
+                renderEntradas();
+                calcularTotais();
+                saveData();
+            }
         }
 
-        function removerSaida(index) {
-            saidas.splice(index, 1);
-            renderizarTabelas();
-            calcularTotais();
-            saveData();
-        }
+    // Funções para adicionar/editar entradas
+    function addEntrada() {
+        document.getElementById('entradaDescricao').value = '';
+        document.getElementById('entradaValor').value = '';
+        openModal('entradaModal');
 
+        // Focar automaticamente no primeiro campo
+        setTimeout(() => {
+            document.getElementById('entradaDescricao').focus();
+        }, 100);
+    }
 
+    // Função de salvamento atualizada
+   // Função de salvamento corrigida
+    async function saveData() {
+        if (!currentUser) return;
 
-        // Função de salvamento ÚNICA
-        function saveData() {
-            if (!currentUser) return;
+        try {
+            const userDocRef = db.collection('users').doc(currentUser.uid);
 
-            db.collection('users').doc(currentUser.uid).set({
+            // SEMPRE substituímos os dados no Firebase pelos locais atuais
+            await userDocRef.set({
                 entradas: entradas,
                 saidas: saidas,
                 lastUpdate: new Date()
-            }, { merge: true }) // IMPORTANTE: merge mantém outros campos
-                .then(() => console.log("Dados salvos!"))
-                .catch(error => console.error("Erro ao salvar:", error));
+            }, { merge: true }); // merge: true preserva outros campos (como created)
+
+            console.log("Dados salvos com sucesso!");
+            showSyncStatus('Dados sincronizados!', 'success');
+        } catch (error) {
+            console.error("Erro ao salvar:", error);
+            showSyncStatus('Erro ao sincronizar dados!', 'error');
+        }
+    }
+
+
+
+    function editarEntrada(index) {
+        document.getElementById('entradaDescricao').value = entradas[index].descricao;
+        document.getElementById('entradaValor').value = entradas[index].valor;
+        openModal('entradaModal');
+
+        // Substitui a entrada ao salvar
+        const saveBtn = document.querySelector('#entradaModal .btn');
+        saveBtn.onclick = function () {
+            const descricao = document.getElementById('entradaDescricao').value;
+            const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
+
+            if (!descricao || isNaN(valor)) {
+                showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
+                return;
+            }
+
+            entradas[index] = { descricao, valor };
+            closeModal('entradaModal');
+            showSyncStatus('Entrada atualizada!', 'success');
+            renderizarTabelas();
+            calcularTotais();
+            saveData();
+        };
+    }
+
+    function removerEntrada(index) {
+        if (confirm('Tem certeza que deseja remover esta entrada?')) {
+            entradas.splice(index, 1);
+            renderEntradas();
+            calcularTotais();
+            saveData();
+            showSyncStatus('Entrada removida!', 'success');
+        }
+    }
+
+    // Funções para adicionar/editar saídas
+    function addSaida() {
+        document.getElementById('saidaCategoria').value = '💳 Cartão de Crédito';
+        document.getElementById('saidaDescricao').value = '';
+        document.getElementById('saidaValor').value = '';
+        document.getElementById('saidaStatus').value = 'Pendente';
+        document.getElementById('saidaVencimento').value = '';
+        openModal('saidaModal');
+
+        // Focar automaticamente no primeiro campo
+        setTimeout(() => {
+            document.getElementById('saidaDescricao').focus();
+        }, 100);
+    }
+
+    function saveSaida() {
+        const categoria = document.getElementById('saidaCategoria').value;
+        const descricao = document.getElementById('saidaDescricao').value;
+        const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
+        const status = document.getElementById('saidaStatus').value;
+        const vencimento = document.getElementById('saidaVencimento').value;
+
+        if (!descricao || isNaN(valor)) {
+            showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
+            return;
         }
 
-        // Função de carregamento ÚNICA
-        function loadUserData() {
-            if (!currentUser) return;
+        saidas.push({ categoria, descricao, valor, status, vencimento });
 
-            db.collection('users').doc(currentUser.uid).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        entradas = data.entradas || [];
-                        saidas = data.saidas || [];
-                        renderizarTabelas();
-                        calcularTotais();
-                    }
+        // Feedback e limpeza
+        showSyncStatus('Saída adicionada!', 'success');
+        document.getElementById('saidaDescricao').value = '';
+        document.getElementById('saidaValor').value = '';
+
+        // Manter foco no campo de descrição para nova saída
+        document.getElementById('saidaDescricao').focus();
+
+        // Atualizar interface
+        renderizarTabelas();
+        calcularTotais();
+        saveData();
+
+        // Verificar se é necessário enviar notificação
+        if (vencimento) {
+            const hoje = new Date();
+            const dataVencimento = new Date(vencimento);
+            const diffDias = Math.ceil((dataVencimento - hoje) / (1000 * 60 * 60 * 24));
+
+            if (diffDias <= 3 && diffDias >= 0) {
+                const notification = {
+                    userId: currentUser.uid,
+                    title: 'Conta próxima do vencimento',
+                    message: `A conta "${descricao}" vence em ${diffDias} dias`,
+                    type: 'warning',
+                    timestamp: new Date().getTime(),
+                    billId: saidas.length - 1,
+                    read: false
+                };
+
+                db.collection('notifications').add(notification);
+            }
+        }
+    }
+
+    function editarSaida(index) {
+        document.getElementById('saidaCategoria').value = saidas[index].categoria;
+        document.getElementById('saidaDescricao').value = saidas[index].descricao;
+        document.getElementById('saidaValor').value = saidas[index].valor;
+        document.getElementById('saidaStatus').value = saidas[index].status;
+        document.getElementById('saidaVencimento').value = saidas[index].vencimento || '';
+        openModal('saidaModal');
+
+        // Substitui a saída ao salvar
+        const saveBtn = document.querySelector('#saidaModal .btn');
+        saveBtn.onclick = function () {
+            const categoria = document.getElementById('saidaCategoria').value;
+            const descricao = document.getElementById('saidaDescricao').value;
+            const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
+            const status = document.getElementById('saidaStatus').value;
+            const vencimento = document.getElementById('saidaVencimento').value;
+
+            if (!descricao || isNaN(valor)) {
+                showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
+                return;
+            }
+
+            // Se a conta estava pendente e agora foi paga, remover notificações
+            if (saidas[index].status !== 'Pago' && status === 'Pago') {
+                clearBillNotifications(index);
+            }
+
+            saidas[index] = { categoria, descricao, valor, status, vencimento };
+            closeModal('saidaModal');
+            showSyncStatus('Saída atualizada!', 'success');
+            renderizarTabelas();
+            calcularTotais();
+            saveData();
+        };
+    }
+
+        function clearBillNotifications(billId) {
+            db.collection('notifications')
+                .where('userId', '==', currentUser.uid)
+                .where('billId', '==', billId)
+                .get()
+                .then(snapshot => {
+                    const batch = db.batch();
+                    snapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    return batch.commit();
                 })
-                .catch(error => console.error("Erro ao carregar:", error));
-        }
-
-        function checkAdminStatus() {
-            if (!currentUser) return;
-
-            db.collection('admins').doc(currentUser.uid).get()
-                .then(doc => {
-                    isAdmin = doc.exists;
+                .then(() => {
+                    showNotifications();
                 });
         }
 
+        function removerSaida(index) {
+            if (confirm('Tem certeza que deseja remover esta saída?')) {
+                // Remover notificações relacionadas
+                clearBillNotifications(index);
+
+                saidas.splice(index, 1);
+                renderSaidas();
+                calcularTotais();
+                saveData();
+            }
+        }
 
         // Funções principais
         function renderizarTabelas() {
@@ -1282,7 +1731,6 @@ select:focus {
             });
         }
 
-
         function renderSaidas() {
             const tbody = document.querySelector('#tblSaidas tbody');
             tbody.innerHTML = '';
@@ -1294,23 +1742,23 @@ select:focus {
                 const bgColor = getCategoriaColor(item.categoria);
 
                 // Aplicar estilo de cor
-                tr.style.backgroundColor = bgColor + '22';  // Adiciona transparência
+                tr.style.backgroundColor = bgColor + '22';
                 tr.style.borderLeft = `4px solid ${bgColor}`;
 
                 tr.innerHTML = `
-                <td>${item.categoria}</td>
-                <td>${item.descricao}</td>
-                <td>${formatarMoeda(item.valor)}</td>
-                <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
-                <td class="actions">
-                    <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
+                    <td>${item.categoria}</td>
+                    <td>${item.descricao}</td>
+                    <td>${formatarMoeda(item.valor)}</td>
+                    <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
                 tbody.appendChild(tr);
             });
         }
@@ -1329,7 +1777,6 @@ select:focus {
             };
             return colorMap[categoria] || "#e5ff00";
         }
-
 
         function calcularTotais() {
             // Entradas
@@ -1360,320 +1807,145 @@ select:focus {
             if (document.getElementById('graficos').style.display !== 'none') {
                 renderizarGraficos();
             }
+
+            // Atualizar notificações
+            showNotifications();
         }
 
-        // Funções para adicionar/editar entradas
-        function addEntrada() {
-            document.getElementById('entradaDescricao').value = '';
-            document.getElementById('entradaValor').value = '';
-            openModal('entradaModal');
-        }
-
-        function saveEntrada() {
-            const descricao = document.getElementById('entradaDescricao').value;
-            const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
-
-            if (!descricao || isNaN(valor)) {
-                alert('Por favor, preencha todos os campos corretamente!');
-                return;
-            }
-
-            entradas.push({ descricao, valor });
-            closeModal('entradaModal');
-            renderizarTabelas();
-            calcularTotais();
-        }
-
-        function editarEntrada(index) {
-            document.getElementById('entradaDescricao').value = entradas[index].descricao;
-            document.getElementById('entradaValor').value = entradas[index].valor;
-            openModal('entradaModal');
-
-            // Substitui a entrada ao salvar
-            const saveBtn = document.querySelector('#entradaModal .btn');
-            saveBtn.onclick = function () {
-                const descricao = document.getElementById('entradaDescricao').value;
-                const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
-
-                if (!descricao || isNaN(valor)) {
-                    alert('Por favor, preencha todos os campos corretamente!');
-                    return;
+        // Funções de gráficos
+        function renderizarGraficos() {
+            // Gráfico de categorias
+            const categorias = {};
+            saidas.forEach(saida => {
+                if (categorias[saida.categoria]) {
+                    categorias[saida.categoria] += saida.valor;
+                } else {
+                    categorias[saida.categoria] = saida.valor;
                 }
-
-                entradas[index] = { descricao, valor };
-                closeModal('entradaModal');
-                renderizarTabelas();
-                calcularTotais();
-            };
-        }
-
-        function removerEntrada(index) {
-            if (confirm('Tem certeza que deseja remover esta entrada?')) {
-                entradas.splice(index, 1);
-                renderEntradas();
-                calcularTotais();
-            }
-        }
-
-        // Funções para adicionar/editar saídas
-        function addSaida() {
-            document.getElementById('saidaCategoria').value = '💳 Cartão de Crédito';
-            document.getElementById('saidaDescricao').value = '';
-            document.getElementById('saidaValor').value = '';
-            document.getElementById('saidaStatus').value = 'Pendente';
-            document.getElementById('saidaVencimento').value = '';
-            openModal('saidaModal');
-        }
-
-        function saveSaida() {
-            const categoria = document.getElementById('saidaCategoria').value;
-            const descricao = document.getElementById('saidaDescricao').value;
-            const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
-            const status = document.getElementById('saidaStatus').value;
-            const vencimento = document.getElementById('saidaVencimento').value;
-
-            if (!descricao || isNaN(valor)) {
-                alert('Por favor, preencha todos os campos corretamente!');
-                return;
-            }
-
-            saidas.push({ categoria, descricao, valor, status, vencimento });
-            closeModal('saidaModal');
-            renderizarTabelas();
-            calcularTotais();
-
-            // Verificar se é necessário enviar notificação
-            if (vencimento) {
-                const hoje = new Date();
-                const dataVencimento = new Date(vencimento);
-                const diffDias = Math.ceil((dataVencimento - hoje) / (1000 * 60 * 60 * 24));
-
-                if (diffDias <= 3 && diffDias >= 0) {
-                    const notification = {
-                        title: 'Conta próxima do vencimento',
-                        message: `A conta "${descricao}" vence em ${diffDias} dias`,
-                        timestamp: new Date().getTime()
-                    };
-                    saveNotification(notification);
-                }
-            }
-        }
-
-        function editarSaida(index) {
-            document.getElementById('saidaCategoria').value = saidas[index].categoria;
-            document.getElementById('saidaDescricao').value = saidas[index].descricao;
-            document.getElementById('saidaValor').value = saidas[index].valor;
-            document.getElementById('saidaStatus').value = saidas[index].status;
-            document.getElementById('saidaVencimento').value = saidas[index].vencimento || '';
-            openModal('saidaModal');
-
-            // Substitui a saída ao salvar
-            const saveBtn = document.querySelector('#saidaModal .btn');
-            saveBtn.onclick = function () {
-                const categoria = document.getElementById('saidaCategoria').value;
-                const descricao = document.getElementById('saidaDescricao').value;
-                const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
-                const status = document.getElementById('saidaStatus').value;
-                const vencimento = document.getElementById('saidaVencimento').value;
-
-                if (!descricao || isNaN(valor)) {
-                    alert('Por favor, preencha todos os campos corretamente!');
-                    return;
-                }
-
-                saidas[index] = { categoria, descricao, valor, status, vencimento };
-                closeModal('saidaModal');
-                renderizarTabelas();
-                calcularTotais();
-            };
-        }
-
-        function removerSaida(index) {
-            if (confirm('Tem certeza que deseja remover esta saída?')) {
-                saidas.splice(index, 1);
-                renderSaidas();
-                calcularTotais();
-            }
-        }
-
-    // Funções de gráficos
-    function renderizarGraficos() {
-        // Gráfico de categorias
-        const categorias = {};
-        saidas.forEach(saida => {
-            if (categorias[saida.categoria]) {
-                categorias[saida.categoria] += saida.valor;
-            } else {
-                categorias[saida.categoria] = saida.valor;
-            }
-        });
-
-        // Crie um array de cores dinamicamente usando getCategoriaColor
-        const categoryColors = Object.keys(categorias).map(categoria => getCategoriaColor(categoria));
-
-        const categoriaCtx = document.getElementById('categoriaChart').getContext('2d');
-
-        // Destrua o gráfico existente antes de criar um novo, se houver
-        if (window.categoriaChartInstance) {
-            window.categoriaChartInstance.destroy();
-        }
-
-        window.categoriaChartInstance = new Chart(categoriaCtx, { // Armazene a instância globalmente
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(categorias),
-                datasets: [{
-                    data: Object.values(categorias),
-                    backgroundColor: categoryColors // Use as cores geradas aqui
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                }
-            }
-        });
-
-        // Gráfico de status
-        const statusCount = {
-            'Pago': saidas.filter(s => s.status === 'Pago').length,
-            'Pendente': saidas.filter(s => s.status === 'Pendente').length
-        };
-
-        const statusCtx = document.getElementById('statusChart').getContext('2d');
-        // Destrua o gráfico existente antes de criar um novo, se houver
-        if (window.statusChartInstance) {
-            window.statusChartInstance.destroy();
-        }
-        window.statusChartInstance = new Chart(statusCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Pago', 'Pendente'],
-                datasets: [{
-                    data: [statusCount.Pago, statusCount.Pendente],
-                    backgroundColor: ['var(--success)', 'var(--warning)'] // Mantém as variáveis CSS
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-
-        // Gráfico comparativo
-        const totalEntradas = entradas.reduce((sum, item) => sum + item.valor, 0);
-        const totalSaidas = saidas.reduce((sum, item) => sum + item.valor, 0);
-
-        const comparativoCtx = document.getElementById('comparativoChart').getContext('2d');
-        // Destrua o gráfico existente antes de criar um novo, se houver
-        if (window.comparativoChartInstance) {
-            window.comparativoChartInstance.destroy();
-        }
-        window.comparativoChartInstance = new Chart(comparativoCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Entradas', 'Saídas'],
-                datasets: [{
-                    label: 'Valores',
-                    data: [totalEntradas, totalSaidas],
-                    backgroundColor: ['var(--success)', 'var(--danger)'] // Mantém as variáveis CSS
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gráfico de evolução mensal
-        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        // **Importante:** Os dados de entradasMensais e saidasMensais estão simulados com Math.random().
-        // Para um gráfico real, você precisaria calcular esses valores a partir dos seus dados de 'entradas' e 'saidas' por mês.
-        const entradasMensais = meses.map(() => Math.floor(Math.random() * 5000) + 2000);
-        const saidasMensais = meses.map(() => Math.floor(Math.random() * 4500) + 1500);
-
-        const evolucaoCtx = document.getElementById('evolucaoChart').getContext('2d');
-        // Destrua o gráfico existente antes de criar um novo, se houver
-        if (window.evolucaoChartInstance) {
-            window.evolucaoChartInstance.destroy();
-        }
-        window.evolucaoChartInstance = new Chart(evolucaoCtx, {
-            type: 'line',
-            data: {
-                labels: meses,
-                datasets: [
-                    {
-                        label: 'Entradas',
-                        data: entradasMensais,
-                        borderColor: 'var(--success)', // Mantém as variáveis CSS
-                        backgroundColor: 'rgba(40, 167, 69, 0.1)', // Cor de fundo da área abaixo da linha
-                        tension: 0.3,
-                        fill: true
-                    },
-                    {
-                        label: 'Saídas',
-                        data: saidasMensais,
-                        borderColor: 'var(--danger)', // Mantém as variáveis CSS
-                        backgroundColor: 'rgba(220, 53, 69, 0.1)', // Cor de fundo da área abaixo da linha
-                        tension: 0.3,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-        // Funções de notificação
-        function saveNotification(notification) {
-            if (!currentUser) return;
-
-            db.collection('notifications').add({
-                userId: currentUser.uid,
-                title: notification.title,
-                message: notification.message,
-                timestamp: notification.timestamp,
-                read: false
             });
-        }
 
-        function loadNotifications() {
-            if (!currentUser) return;
+            // Crie um array de cores dinamicamente usando getCategoriaColor
+            const categoryColors = Object.keys(categorias).map(categoria => getCategoriaColor(categoria));
 
-            db.collection('notifications')
-                .where('userId', '==', currentUser.uid)
-                .orderBy('timestamp', 'desc')
-                .limit(10)
-                .get()
-                .then(snapshot => {
-                    const notificationList = document.getElementById('notification-list');
-                    notificationList.innerHTML = '';
+            const categoriaCtx = document.getElementById('categoriaChart').getContext('2d');
 
-                    snapshot.forEach(doc => {
-                        const notification = doc.data();
-                        const item = document.createElement('div');
-                        item.className = 'notification-item';
-                        item.innerHTML = `
-                            <strong>${notification.title}</strong>
-                            <p>${notification.message}</p>
-                            <small>${new Date(notification.timestamp).toLocaleString()}</small>
-                        `;
-                        notificationList.appendChild(item);
-                    });
-                });
+            // Destrua o gráfico existente antes de criar um novo, se houver
+            if (window.categoriaChartInstance) {
+                window.categoriaChartInstance.destroy();
+            }
+
+            window.categoriaChartInstance = new Chart(categoriaCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categorias),
+                    datasets: [{
+                        data: Object.values(categorias),
+                        backgroundColor: categoryColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de status
+            const statusCount = {
+                'Pago': saidas.filter(s => s.status === 'Pago').length,
+                'Pendente': saidas.filter(s => s.status === 'Pendente').length
+            };
+
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            if (window.statusChartInstance) {
+                window.statusChartInstance.destroy();
+            }
+            window.statusChartInstance = new Chart(statusCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Pago', 'Pendente'],
+                    datasets: [{
+                        data: [statusCount.Pago, statusCount.Pendente],
+                        backgroundColor: ['var(--success)', 'var(--warning)']
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            // Gráfico comparativo
+            const totalEntradas = entradas.reduce((sum, item) => sum + item.valor, 0);
+            const totalSaidas = saidas.reduce((sum, item) => sum + item.valor, 0);
+
+            const comparativoCtx = document.getElementById('comparativoChart').getContext('2d');
+            if (window.comparativoChartInstance) {
+                window.comparativoChartInstance.destroy();
+            }
+            window.comparativoChartInstance = new Chart(comparativoCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Entradas', 'Saídas'],
+                    datasets: [{
+                        label: 'Valores',
+                        data: [totalEntradas, totalSaidas],
+                        backgroundColor: ['var(--success)', 'var(--danger)']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de evolução mensal
+            const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const entradasMensais = meses.map(() => Math.floor(Math.random() * 5000) + 2000);
+            const saidasMensais = meses.map(() => Math.floor(Math.random() * 4500) + 1500);
+
+            const evolucaoCtx = document.getElementById('evolucaoChart').getContext('2d');
+            if (window.evolucaoChartInstance) {
+                window.evolucaoChartInstance.destroy();
+            }
+            window.evolucaoChartInstance = new Chart(evolucaoCtx, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [
+                        {
+                            label: 'Entradas',
+                            data: entradasMensais,
+                            borderColor: 'var(--success)',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Saídas',
+                            data: saidasMensais,
+                            borderColor: 'var(--danger)',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         }
 
         function sendNotification() {
@@ -1699,13 +1971,13 @@ select:focus {
         function checkAdminStatus() {
             if (!currentUser) return;
 
-            // Verificar se o usuário é admin (neste exemplo, qualquer usuário é admin)
+            // Verificar se o usuário é admin
             isAdmin = true;
             document.getElementById('admin-tab').style.display = isAdmin ? 'block' : 'none';
 
             if (isAdmin) {
                 loadAdminUsers();
-                loadNotifications();
+                showNotifications();
             }
         }
 
@@ -1724,47 +1996,6 @@ select:focus {
                     usersTable.appendChild(tr);
                 });
             });
-        }
-
-        // Funções de persistência
-
-        function saveData() {
-            if (!currentUser) return;
-
-            const data = {
-                entradas: entradas,
-                saidas: saidas,
-                timestamp: new Date().getTime()
-            };
-
-            db.collection('users').doc(currentUser.uid).set(data, { merge: true })
-                .then(() => {
-                    console.log('Dados salvos no Firebase');
-                })
-                .catch(error => {
-                    console.error('Erro ao salvar dados:', error);
-                });
-        }
-
-        function loadUserData() {
-            if (!currentUser) return;
-
-            db.collection('users').doc(currentUser.uid).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        entradas = data.entradas || [];
-                        saidas = data.saidas || [];
-                        renderizarTabelas();
-                        calcularTotais();
-
-                        // Atualizar último login
-                        db.collection('users').doc(currentUser.uid).set({
-                            email: currentUser.email,
-                            lastLogin: new Date().getTime()
-                        }, { merge: true });
-                    }
-                });
         }
 
         // Funções auxiliares
@@ -1789,7 +2020,7 @@ select:focus {
                 renderizarGraficos();
             } else if (tabName === 'admin' && isAdmin) {
                 loadAdminUsers();
-                loadNotifications();
+                showNotifications();
             }
         }
 
@@ -1807,6 +2038,7 @@ select:focus {
                 saidas = [];
                 renderizarTabelas();
                 calcularTotais();
+                saveData();
             }
         }
 
@@ -1935,6 +2167,7 @@ select:focus {
                     saidas = data.saidas || [];
                     renderizarTabelas();
                     calcularTotais();
+                    saveData();
                     showSyncStatus('Dados importados com sucesso!', 'success');
                 } catch (error) {
                     showSyncStatus('Erro ao importar dados. Arquivo inválido!', 'error');
@@ -1977,15 +2210,9 @@ select:focus {
 
         // PWA: Service Worker Registration
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Falha ao registrar Service Worker:', error);
-                    });
-            });
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(() => console.log('Service Worker registrado!'))
+                .catch(error => console.error('Erro ao registrar Service Worker:', error));
         }
 
         // PWA: Install Prompt
