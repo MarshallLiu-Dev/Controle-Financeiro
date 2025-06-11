@@ -832,6 +832,8 @@
                         <tr>
                             <th>Descrição</th>
                             <th>Valor (R$)</th>
+                            <th>Vencimento</th> <!-- NOVO -->
+                            <th>⚠️</th> <!-- NOVO -->
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -1314,39 +1316,39 @@
                 });
         }
 
-        // Função para salvar dados no Firebase
+    // Função para salvar dados no Firebase
     // Função de salvamento atualizada para preservar dados históricos
-        async function saveData() {
-            if (!currentUser) return;
+    async function saveData() {
+    if (!currentUser) return;
 
-            try {
-                const userDocRef = db.collection('users').doc(currentUser.uid);
-                const doc = await userDocRef.get();
+    try {
+        const userDocRef = db.collection('users').doc(currentUser.uid);
+        const doc = await userDocRef.get();
 
-                if (doc.exists) {
-                    const existingData = doc.data();
-                    // Combina dados existentes com novos dados
-                    await userDocRef.update({
-                        entradas: [...(existingData.entradas || []), ...entradas],
-                        saidas: [...(existingData.saidas || []), ...saidas],
-                        lastUpdate: new Date()
-                    });
-                } else {
-                    // Cria novo documento se não existir
-                    await userDocRef.set({
-                        entradas: entradas,
-                        saidas: saidas,
-                        created: new Date(),
-                        lastUpdate: new Date()
-                    });
-                }
-                console.log("Dados salvos com sucesso!");
-                showSyncStatus('Dados sincronizados!', 'success');
-            } catch (error) {
-                console.error("Erro ao salvar:", error);
-                showSyncStatus('Erro ao sincronizar dados!', 'error');
-            }
+        if (doc.exists) {
+            const existingData = doc.data();
+            // Combina dados existentes com novos dados
+            await userDocRef.update({
+                entradas: [...(existingData.entradas || []), ...entradas],
+                saidas: [...(existingData.saidas || []), ...saidas],
+                lastUpdate: new Date()
+            });
+        } else {
+            // Cria novo documento se não existir
+            await userDocRef.set({
+                entradas: entradas,
+                saidas: saidas,
+                created: new Date(),
+                lastUpdate: new Date()
+            });
         }
+        console.log("Dados salvos com sucesso!");
+        showSyncStatus('Dados sincronizados!', 'success');
+    } catch (error) {
+        console.error("Erro ao salvar:", error);
+        showSyncStatus('Erro ao sincronizar dados!', 'error');
+    }
+}
 
         // Função para carregar dados do Firebase (atualizada)
         // Função para carregar dados do Firebase (corrigida)
@@ -1457,24 +1459,21 @@
             openModal('entradaModal');
         }
 
-            function saveEntrada() {
-                const descricao = document.getElementById('entradaDescricao').value;
-                const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
+        function saveEntrada() {
+            const descricao = document.getElementById('entradaDescricao').value;
+            const valor = parseFloat(document.getElementById('entradaValor').value.replace(',', '.'));
 
-                if (!descricao || isNaN(valor)) {
-                    showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
-                    return;
-                }
-
-                // ADICIONA nova entrada sem remover as existentes
-                entradas.push({ descricao, valor });
-
-                closeModal('entradaModal');
-                showSyncStatus('Entrada adicionada!', 'success');
-                renderizarTabelas();
-                calcularTotais();
-                saveData();
+            if (!descricao || isNaN(valor)) {
+                alert('Por favor, preencha todos os campos corretamente!');
+                return;
             }
+
+            entradas.push({ descricao, valor });
+            closeModal('entradaModal');
+            renderizarTabelas();
+            calcularTotais();
+            saveData();
+        }
 
         function editarEntrada(index) {
             document.getElementById('entradaDescricao').value = entradas[index].descricao;
@@ -1597,28 +1596,31 @@
     }
 
     function saveSaida() {
-            const categoria = document.getElementById('saidaCategoria').value;
-            const descricao = document.getElementById('saidaDescricao').value;
-            const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
-            const status = document.getElementById('saidaStatus').value;
-            const vencimento = document.getElementById('saidaVencimento').value;
+        const categoria = document.getElementById('saidaCategoria').value;
+        const descricao = document.getElementById('saidaDescricao').value;
+        const valor = parseFloat(document.getElementById('saidaValor').value.replace(',', '.'));
+        const status = document.getElementById('saidaStatus').value;
+        const vencimento = document.getElementById('saidaVencimento').value;
 
-            if (!descricao || isNaN(valor)) {
-                showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
-                return;
-            }
+        if (!descricao || isNaN(valor)) {
+            showSyncStatus('Por favor, preencha todos os campos corretamente!', 'error');
+            return;
+        }
 
-            // ADICIONA nova saída sem remover as existentes
-            saidas.push({ categoria, descricao, valor, status, vencimento });
+        saidas.push({ categoria, descricao, valor, status, vencimento });
 
-            // Feedback e limpeza
-            showSyncStatus('Saída adicionada!', 'success');
+        // Feedback e limpeza
+        showSyncStatus('Saída adicionada!', 'success');
+        document.getElementById('saidaDescricao').value = '';
+        document.getElementById('saidaValor').value = '';
 
-            closeModal('saidaModal');
-            renderizarTabelas();
-            calcularTotais();
-            saveData();
-        
+        // Manter foco no campo de descrição para nova saída
+        document.getElementById('saidaDescricao').focus();
+
+        // Atualizar interface
+        renderizarTabelas();
+        calcularTotais();
+        saveData();
 
         // Verificar se é necessário enviar notificação
         if (vencimento) {
@@ -1731,37 +1733,90 @@
             });
         }
 
-        function renderSaidas() {
-            const tbody = document.querySelector('#tblSaidas tbody');
-            tbody.innerHTML = '';
+        // function renderSaidas() {
+        //     const tbody = document.querySelector('#tblSaidas tbody');
+        //     tbody.innerHTML = '';
 
-            saidas.forEach((item, index) => {
-                const tr = document.createElement('tr');
+        //     saidas.forEach((item, index) => {
+        //         const tr = document.createElement('tr');
 
-                // Obter cor da categoria
-                const bgColor = getCategoriaColor(item.categoria);
+        //         // Obter cor da categoria
+        //         const bgColor = getCategoriaColor(item.categoria);
 
-                // Aplicar estilo de cor
-                tr.style.backgroundColor = bgColor + '22';
-                tr.style.borderLeft = `4px solid ${bgColor}`;
+        //         // Aplicar estilo de cor
+        //         tr.style.backgroundColor = bgColor + '22';
+        //         tr.style.borderLeft = `4px solid ${bgColor}`;
 
-                tr.innerHTML = `
-                    <td>${item.categoria}</td>
-                    <td>${item.descricao}</td>
-                    <td>${formatarMoeda(item.valor)}</td>
-                    <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
-                    <td class="actions">
-                        <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
+        //         tr.innerHTML = `
+        //             <td>${item.categoria}</td>
+        //             <td>${item.descricao}</td>
+        //             <td>${formatarMoeda(item.valor)}</td>
+        //             <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
+        //             <td class="actions">
+        //                 <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
+        //                     <i class="fas fa-edit"></i>
+        //                 </button>
+        //                 <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
+        //                     <i class="fas fa-trash"></i>
+        //                 </button>
+        //             </td>
+        //         `;
+        //         tbody.appendChild(tr);
+        //     });
+        // }
+            function renderSaidas() {
+                const tbody = document.querySelector('#tblSaidas tbody');
+                tbody.innerHTML = '';
+
+                saidas.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+
+                    const bgColor = getCategoriaColor(item.categoria);
+                    tr.style.backgroundColor = bgColor + '22';
+                    tr.style.borderLeft = `4px solid ${bgColor}`;
+
+                    // Checar vencimento
+                    let statusVencimento = '✔️';
+                    let vencida = false;
+                    if (item.vencimento && item.status !== 'Pago') {
+                        const hoje = new Date();
+                        hoje.setHours(0, 0, 0, 0);
+                        const dataVenc = new Date(item.vencimento);
+                        dataVenc.setHours(0, 0, 0, 0);
+                        const diffDias = Math.ceil((dataVenc - hoje) / (1000 * 60 * 60 * 24));
+
+                        if (diffDias < 0) {
+                            statusVencimento = '❌';
+                            vencida = true;
+                        } else if (diffDias <= 3) {
+                            statusVencimento = '⚠️';
+                        }
+                    }
+
+                    // Aplica estilo se vencida
+                    if (vencida) {
+                        tr.style.backgroundColor = '#ffcccc'; // vermelho claro
+                    }
+
+                    tr.innerHTML = `
+            <td>${item.categoria}</td>
+            <td>${item.descricao}</td>
+            <td>${formatarMoeda(item.valor)}</td>
+            <td class="${item.status === 'Pago' ? 'pago' : 'pendente'}">${item.status}</td>
+            <td>${item.vencimento ? new Date(item.vencimento).toLocaleDateString() : '-'}</td>
+            <td>${statusVencimento}</td>
+            <td class="actions">
+                <button class="btn btn-primary btn-sm" onclick="editarSaida(${index})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="removerSaida(${index})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+                    tbody.appendChild(tr);
+                });
+            }
 
         // Função para obter cores em hexadecimal
         function getCategoriaColor(categoria) {
@@ -2077,6 +2132,11 @@
             doc.text("Relatório Financeiro", 105, 20, null, null, 'center');
             doc.setFontSize(12);
             doc.text(`Gerado em: ${new Date().toLocaleDateString()}`, 105, 28, null, null, 'center');
+            
+            if (currentUser) {
+                doc.text(`Usuário: ${currentUser.displayName || 'Nome não disponível'}`, 14, 38);
+                doc.text(`Email: ${currentUser.email}`, 14, 44);
+            }
 
             // Tabela de Entradas
             doc.autoTable({
@@ -2088,11 +2148,40 @@
                 margin: { top: 10 }
             });
 
-            // Tabela de Saídas
+            // // Tabela de Saídas
+            // doc.autoTable({
+            //     startY: doc.lastAutoTable.finalY + 10,
+            //     head: [['Categoria', 'Descrição', 'Valor (R$)', 'Status']],
+            //     body: saidas.map(item => [item.categoria, item.descricao, formatarMoeda(item.valor), item.status]),
+            //     theme: 'grid',
+            //     headStyles: { fillColor: [26, 42, 108] },
+            //     didDrawCell: function (data) {
+            //         if (data.section === 'body' && data.column.index === 3) {
+            //             if (data.cell.raw === 'Pago') {
+            //                 doc.setTextColor(21, 87, 36);
+            //                 doc.setFillColor(212, 237, 218);
+            //             } else {
+            //                 doc.setTextColor(133, 100, 4);
+            //                 doc.setFillColor(255, 243, 205);
+            //             }
+            //             doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
+            //             doc.text(data.cell.raw, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 2, { align: 'center' });
+            //             return false;
+            //         }
+            //     }
+            // });
+            
+            // Tabela de Saídas (com vencimento)
             doc.autoTable({
                 startY: doc.lastAutoTable.finalY + 10,
-                head: [['Categoria', 'Descrição', 'Valor (R$)', 'Status']],
-                body: saidas.map(item => [item.categoria, item.descricao, formatarMoeda(item.valor), item.status]),
+                head: [['Categoria', 'Descrição', 'Valor (R$)', 'Status', 'Vencimento']],
+                body: saidas.map(item => [
+                    item.categoria,
+                    item.descricao,
+                    formatarMoeda(item.valor),
+                    item.status,
+                    item.vencimento ? new Date(item.vencimento).toLocaleDateString() : '-'
+                ]),
                 theme: 'grid',
                 headStyles: { fillColor: [26, 42, 108] },
                 didDrawCell: function (data) {
@@ -2110,6 +2199,7 @@
                     }
                 }
             });
+
 
             // Resumo
             const totalEntradas = entradas.reduce((a, b) => a + b.valor, 0);
